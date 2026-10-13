@@ -8,6 +8,7 @@ from seleniumbase import SB
 # 环境变量配置(可以直接私库在双引号里填写)
 EMAIL         = os.environ.get("EMAIL") or "xxxxx@gmail.com"   # 邮箱,只用于通知使用，可随意填写
 SESSION_TOKEN = os.environ.get("SESSION_TOKEN") or ""          # session token，必须填写
+SECRET_NAME   = os.environ.get("SECRET_NAME") or "SESSION_TOKEN"  # 自动回写 token 的目标 Secret 名（多账号时区分）
 GH_TOKEN      = os.environ.get("GH_TOKEN") or ""               # GitHub PAT token,用于自动更新session token,必须填写
 TG_CHAT_ID    = os.environ.get("TG_CHAT_ID") or ""             # TG chat id,不填写不通知，需和bot token一起填写生效
 TG_BOT_TOKEN  = os.environ.get("TG_BOT_TOKEN") or ""           # TG bot token
@@ -970,13 +971,13 @@ def main():
         if should_update_cookie(new_token, old_token, token_expiry):
             print("🔄 SESSION_TOKEN 需要更新")
             if GH_TOKEN:
-                if update_github_secret("SESSION_TOKEN", new_token):
-                    print("✅ SESSION_TOKEN 更新成功")
+                if update_github_secret(SECRET_NAME, new_token):
+                    print(f"✅ {SECRET_NAME} 更新成功")
                 else:
                     print("⚠️ 更新失败，请检查 GH_TOKEN 权限")
             else:
                 print("⚠️ 未设置 GH_TOKEN，无法自动更新")
-                print(f"📋 请手动设置 SESSION_TOKEN = {new_token[:4]}...{new_token[-4:]}")
+                print(f"📋 请手动设置 {SECRET_NAME} = {new_token[:4]}...{new_token[-4:]}")
         else:
             print("✅ SESSION_TOKEN 无需更新")
         

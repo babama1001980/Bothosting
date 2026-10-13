@@ -55,11 +55,29 @@ jobs:
           echo ""
           echo "✅ 日本 socks 已转发到本地 127.0.0.1:1080"
 
-      - name: 🚀 运行续期脚本
+      - name: 🚀 运行续期脚本 (账号1)
+        continue-on-error: true
         env:
           EMAIL: ${{ secrets.EMAIL }}
+          USER_ID: ${{ secrets.USER_ID }}
+          USERNAME: ${{ secrets.USERNAME }}
+          SECRET_NAME: SESSION_TOKEN
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           SESSION_TOKEN: ${{ secrets.SESSION_TOKEN }}
+          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+          TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+        run: |
+          xvfb-run --auto-servernum python3 app.py
+
+      - name: 🚀 运行续期脚本 (账号2)
+        continue-on-error: true
+        env:
+          EMAIL: ${{ secrets.EMAIL_2 }}
+          USER_ID: ${{ secrets.USER_ID_2 }}
+          USERNAME: ${{ secrets.USERNAME_2 }}
+          SECRET_NAME: SESSION_TOKEN_2
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          SESSION_TOKEN: ${{ secrets.SESSION_TOKEN_2 }}
           TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
           TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
         run: |
